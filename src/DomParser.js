@@ -3,10 +3,18 @@ function modifyNode(node) {
     tagName: node.localName,
   };
   switch (node.localName) {
+    case "i": {
+      defaultValue = Object.assign(defaultValue, {
+        className: node.className,
+      });
+      break;
+    }
+
     case "form": {
       defaultValue = Object.assign(defaultValue, {
         method: node.method,
         onSubmit: node,
+        className: node.className,
       });
       break;
     }
@@ -18,8 +26,24 @@ function modifyNode(node) {
       break;
     }
 
+    case "fieldset": {
+      defaultValue = Object.assign(defaultValue, {
+        className: node.className,
+      });
+      break;
+    }
+
+    case "legend": {
+      defaultValue = Object.assign(defaultValue, {
+        className: node.className,
+        text: node.innerText,
+      });
+      break;
+    }
+
     case "label": {
       defaultValue = Object.assign(defaultValue, {
+        className: node.className,
         for: node.htmlFor,
         text: node.innerText,
       });
@@ -28,6 +52,7 @@ function modifyNode(node) {
 
     case "span": {
       defaultValue = Object.assign(defaultValue, {
+        className: node.className,
         text: node.textContent,
       });
       break;
@@ -39,6 +64,13 @@ function modifyNode(node) {
         type: node.type,
         name: node.name,
         placeholder: node.placeholder,
+        value: node.value,
+        className: node.className,
+        accept: node.accept,
+        multiple: node.multiple,
+        min: node.min,
+        max: node.min,
+        checked: node.checked,
       });
       break;
     }
@@ -73,6 +105,7 @@ function modifyNode(node) {
 
     case "p": {
       defaultValue = Object.assign(defaultValue, {
+        className: node.className,
         text: node.innerText,
       });
       break;

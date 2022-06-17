@@ -24,6 +24,7 @@ const HtmlCode = () => {
     let root = parse(newValue);
 
     output = alog([...html.body.children]);
+    // console.log("root", output);
 
     const form = root.getElementsByTagName("form");
     const label = root.getElementsByTagName("label");

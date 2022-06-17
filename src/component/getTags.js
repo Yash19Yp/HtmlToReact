@@ -1,6 +1,146 @@
 export default function getTags(tags) {
   let tag = "";
   switch (tags.tagName) {
+    // case "input": {
+    //   tag = `<${tags.tagName}
+    //              type="${tags.type}"
+    //              ${tags.type !== "submit" ? `onChange={handleChange}` : ""}
+    //              ${tags.id ? `value={state.${tags.id}}` : ""}
+    //              ${
+    //                tags?.placeholder ? `placeholder="${tags?.placeholder}"` : ""
+    //              }
+    //              ${tags?.name ? `name="${tags?.name}"` : ""}
+    //          />\n\t`;
+    //   break;
+    // }
+
+    case "input": {
+      switch (tags.type) {
+        case "text": {
+          tag = `<${tags.tagName}
+                ${tags.className ? `className="${tags.className}"` : ""}
+                type="${tags.type}"
+                onChange={handleChange}
+                ${tags.id ? `value={state.${tags.id}}` : ""}
+                ${tags?.placeholder ? `placeholder="${tags?.placeholder}"` : ""}
+                ${tags?.name ? `name="${tags?.name}"` : ""}
+             />\n\t\t`;
+          break;
+        }
+
+        case "email": {
+          tag = `<${tags.tagName}
+                ${tags.className ? `className="${tags.className}"` : ""}
+                type="${tags.type}"
+                onChange={handleChange}
+                ${tags.id ? `value={state.${tags.id}}` : ""}
+                ${tags?.placeholder ? `placeholder="${tags?.placeholder}"` : ""}
+                ${tags?.name ? `name="${tags?.name}"` : ""}
+               />\n\t\t`;
+          break;
+        }
+
+        case "date": {
+          tag = `<${tags.tagName}
+                  ${tags.className ? `className="${tags.className}"` : ""}
+                  type="${tags.type}"
+                  onChange={handleChange}
+                  ${tags.id ? `value={state.${tags.id}}` : ""}
+                  ${tags?.name ? `name="${tags?.name}"` : ""}
+                  ${tags?.min ? `min="${tags?.min}"` : ""}
+                  ${tags?.max ? `max="${tags?.max}"` : ""}
+                 />\n\t\t`;
+          break;
+        }
+
+        case "number": {
+          tag = `<${tags.tagName}
+                    ${tags.className ? `className="${tags.className}"` : ""}
+                    type="${tags.type}"
+                    onChange={handleChange}
+                    ${tags?.id ? `value={state.${tags?.id}}` : ""}
+                    ${tags?.name ? `name="${tags?.name}"` : ""}
+                    ${tags?.min ? `min="${tags?.min}"` : ""}
+                    ${tags?.max ? `max="${tags?.max}"` : ""}
+                   />\n\t\t`;
+          break;
+        }
+
+        case "password": {
+          tag = `<${tags.tagName}
+                    ${tags.className ? `className="${tags.className}"` : ""}
+                    type="${tags.type}"
+                    onChange={handleChange}
+                    ${tags.id ? `value={state.${tags.id}}` : ""}
+                    ${
+                      tags?.placeholder
+                        ? `placeholder="${tags?.placeholder}"`
+                        : ""
+                    }
+                    ${tags?.name ? `name="${tags?.name}"` : ""}
+                 />\n\t\t`;
+          break;
+        }
+
+        case "file": {
+          tag = `<${tags.tagName}${
+            tags.className ? `className="${tags.className}"` : ""
+          }
+                    type="${tags.type}"
+                    onChange={handleChange}
+                    ${tags.id ? `value={state.${tags.id}}` : ""}
+                    ${tags?.name ? `name="${tags?.name}"` : ""}
+                    ${tags?.multiple ? "multiple" : ""}
+                />\n\t\t`;
+          break;
+        }
+
+        case "button": {
+          tag = `<${tags.tagName}
+                    ${tags.className ? `className="${tags.className}"` : ""}
+                    type="${tags.type}"
+                    ${tags.value ? `value="${tags.value}"` : ""}
+                    ${tags?.name ? `name="${tags?.name}"` : ""}
+                />\n\t\t`;
+          break;
+        }
+
+        case "submit": {
+          tag = `<${tags.tagName}
+                  type="${tags.type}"
+                  ${tags.className ? `className="${tags.className}"` : ""}
+                  ${tags.value ? `value="${tags.value}"` : ""}
+                  ${tags?.name ? `name="${tags?.name}"` : ""}
+               />\n\t\t`;
+          break;
+        }
+
+        case "radio": {
+          tag = `<${tags.tagName}
+                    type="${tags.type}"
+                    ${tags?.id ? `id="${tags?.id}"` : ""}
+                    ${tags.value ? `value="${tags.value}"` : ""}
+                    ${tags?.name ? `name="${tags?.name}"` : ""}
+                    ${tags?.checked ? `checked={${tags.checked}}` : ""}
+                    onChange={handleChange}
+                 />\n\t\t`;
+          break;
+        }
+
+        case "reset": {
+          tag = `<${tags.tagName}
+                    type="${tags.type}"
+                    ${tags.className ? `className="${tags.className}"` : ""}
+                    ${tags.value ? `value="${tags.value}"` : ""}
+                    ${tags?.name ? `name="${tags?.name}"` : ""}
+                 />\n\t\t`;
+          break;
+        }
+        default:
+      }
+      return tag;
+    }
+
     case "div": {
       tag = `<${tags?.tagName} ${
         tags.className ? `className="${tags.className}"` : ""
@@ -16,20 +156,59 @@ export default function getTags(tags) {
       break;
     }
 
+    case "fieldset": {
+      tag = `<${tags?.tagName} ${
+        tags.className ? `className="${tags.className}"` : ""
+      }>
+            ${
+              tags.child
+                ? tags.child?.map((formChild) => {
+                    return getTags(formChild);
+                  })
+                : ""
+            }
+            </${tags?.tagName}>\n\t`;
+      break;
+    }
+
+    case "legend": {
+      tag = `<${tags?.tagName} ${
+        tags.className ? `className="${tags.className}"` : ""
+      }>${tags.text}
+            ${
+              tags.child
+                ? tags.child?.map((formChild) => {
+                    return getTags(formChild);
+                  })
+                : ""
+            }
+            </${tags?.tagName}>\n\t`;
+      break;
+    }
+
     case "label": {
-      tag = `<${tags.tagName} ${tags.for && `for="${tags.for}"`}>${tags.text}
+      tag = `<${tags.tagName} ${
+        tags.className ? `className="${tags.className}"` : ""
+      } ${tags.for && `for="${tags.for}"`}>${tags.text}
              ${
                tags.child
                  ? tags.child?.map((formChild) => {
                      return getTags(formChild);
                    })
                  : ""
-             }</${tags.tagName}>\n\t`;
+             }</${tags.tagName}>\n\t\t`;
       break;
     }
 
     case "br": {
       tag = `<${tags.tagName}/>`;
+      break;
+    }
+
+    case "i": {
+      tag = `<${tags.tagName} ${
+        tags.className ? `className="${tags.className}"` : ""
+      }/>`;
       break;
     }
 
@@ -90,7 +269,9 @@ export default function getTags(tags) {
     }
 
     case "span": {
-      tag = `<${tags.tagName}>${tags.text}
+      tag = `<${tags.tagName} ${
+        tags.className ? `className="${tags.className}"` : ""
+      }>${tags.text}
           ${
             tags.child
               ? tags.child?.map((formChild) => {
@@ -111,17 +292,6 @@ export default function getTags(tags) {
               : ""
           }
         </${tags.tagName}>\n\t`;
-      break;
-    }
-
-    case "input": {
-      tag = `<${tags.tagName}
-               type="${tags.type}"
-               ${tags.type !== "submit" ? `onChange={handleChange}` : ""}
-               ${tags.id ? `value={state.${tags.id}}` : ""}
-               ${tags?.placeholder ? `placeholder="${tags?.placeholder}"` : ""}
-               ${tags?.name ? `name="${tags?.name}"` : ""}
-           />\n\t`;
       break;
     }
 
