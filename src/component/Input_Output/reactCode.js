@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
-import editorContext from "../editorContext";
-import "./style.css";
-const ReactCode = (props) => {
+import editorContext from "../../editorContext";
+import "../../Style/style.css";
+
+const ReactCode = () => {
   const { markdownText } = useContext(editorContext);
   return (
     <div className="subcontainer">
