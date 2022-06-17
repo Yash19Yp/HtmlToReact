@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import "./style.css";
+import "../../Style/style.css";
 import { parse } from "node-html-parser";
-import ReactConverter from "./reactConverter";
-import alog from "../DomParser";
+import ReactConverter from "../reactConverter";
+import alog from "../../DomParser";
 
 const parser = new DOMParser();
 
@@ -30,6 +30,7 @@ const HtmlCode = () => {
     const input = root.getElementsByTagName("input");
     const select = root.getElementsByTagName("select");
     const option = root.getElementsByTagName("option");
+
     setState({
       formTag: form,
       labelTag: label,
@@ -38,8 +39,6 @@ const HtmlCode = () => {
       optionTag: option,
     });
   };
-
-  // console.log("output", output);
 
   return (
     <div className="subcontainer">

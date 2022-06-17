@@ -1,8 +1,9 @@
 import React from "react";
-import "./App.css";
-import HtmlCode from "./component/htmlCode";
-import ReactCode from "./component/reactCode";
+import "./Style/App.css";
+import HtmlCode from "./component/Input_Output/htmlCode";
+import ReactCode from "./component/Input_Output/reactCode";
 import EditorContext from "./editorContext";
+
 function App() {
   const [markdownText, setCodeString] = React.useState("");
   const contextValue = {
