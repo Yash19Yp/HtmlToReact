@@ -10,6 +10,57 @@ function modifyNode(node) {
       break;
     }
 
+    case "textarea": {
+      defaultValue = Object.assign(defaultValue, {
+        className: node.className,
+        text: node.innerText,
+        rows: node.rows,
+        cols: node.cols,
+        value: node,
+      });
+      break;
+    }
+
+    case "button": {
+      defaultValue = Object.assign(defaultValue, {
+        className: node.className,
+        type: node.type,
+        text: node.innerText,
+      });
+      break;
+    }
+
+    case "table": {
+      defaultValue = Object.assign(defaultValue, {
+        className: node.className,
+      });
+      break;
+    }
+
+    case "tr": {
+      defaultValue = Object.assign(defaultValue, {
+        className: node.className,
+        text: node.textContent,
+      });
+      break;
+    }
+
+    case "th": {
+      defaultValue = Object.assign(defaultValue, {
+        className: node.className,
+        text: node.textContent,
+      });
+      break;
+    }
+
+    case "td": {
+      defaultValue = Object.assign(defaultValue, {
+        className: node.className,
+        text: node.textContent,
+      });
+      break;
+    }
+
     case "form": {
       defaultValue = Object.assign(defaultValue, {
         method: node.method,
@@ -98,7 +149,7 @@ function modifyNode(node) {
 
     case "h4": {
       defaultValue = Object.assign(defaultValue, {
-        text: node,
+        text: node.innerText,
       });
       break;
     }

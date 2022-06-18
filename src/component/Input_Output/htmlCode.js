@@ -8,7 +8,7 @@ const parser = new DOMParser();
 
 let html = "";
 let output;
-
+let radioTag;
 const HtmlCode = () => {
   const [state, setState] = useState({
     formTag: "",
@@ -16,6 +16,7 @@ const HtmlCode = () => {
     inputTag: "",
     optionTag: "",
     selectTag: "",
+    radioTag: "",
   });
 
   const onInputChange = (e) => {
@@ -24,11 +25,12 @@ const HtmlCode = () => {
     let root = parse(newValue);
 
     output = alog([...html.body.children]);
-    // console.log("root", output);
 
     const form = root.getElementsByTagName("form");
     const label = root.getElementsByTagName("label");
     const input = root.getElementsByTagName("input");
+    const Tag = parser.parseFromString(input, "text/html");
+    radioTag = alog([...Tag.body.children]);
     const select = root.getElementsByTagName("select");
     const option = root.getElementsByTagName("option");
 
@@ -52,6 +54,7 @@ const HtmlCode = () => {
           label={state.labelTag}
           input={state.inputTag}
           output={output}
+          radioTag={radioTag}
         />
       </div>
       <textarea className="textArea" onChange={onInputChange} />
