@@ -45,6 +45,23 @@ function modifyNode(node) {
       break;
     }
 
+    case "ul": {
+      defaultValue = Object.assign(defaultValue, {
+        className: node.className,
+        style: node.style,
+        text: node,
+      });
+      break;
+    }
+
+    case "li": {
+      defaultValue = Object.assign(defaultValue, {
+        className: node.className,
+        text: node.innerText,
+      });
+      break;
+    }
+
     case "th": {
       defaultValue = Object.assign(defaultValue, {
         className: node.className,
@@ -122,6 +139,7 @@ function modifyNode(node) {
         min: node.min,
         max: node.min,
         checked: node.checked,
+        required: node.required,
       });
       break;
     }

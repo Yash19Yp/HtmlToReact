@@ -13,11 +13,20 @@ export default function getTags(tags, radiokeys, checkBox) {
             type="${tags.type}"
             onChange={handleChange}
             ${tags.id ? `value={state.${tags.id}}` : ""}
-            ${tags?.placeholder ? `placeholder="${tags?.placeholder}"` : ""}
             ${tags?.name ? `name="${tags?.name}"` : ""}
+            ${tags?.required ? `onBlur={handle${tags?.name}}` : ""}
+            ${tags?.placeholder ? `placeholder="${tags?.placeholder}"` : ""}
             ${tags?.min ? `min="${tags?.min}"` : ""}
             ${tags?.max ? `max="${tags?.max}"` : ""}
-         />`;
+         />
+         ${
+           tags?.required
+             ? `<div style={{ color: "red" }}>
+         <h3>{state?.error${tags?.name}}</h3>
+       </div>`
+             : ""
+         }
+         `;
           break;
         }
 
@@ -29,7 +38,15 @@ export default function getTags(tags, radiokeys, checkBox) {
             ${tags.id ? `value={state.${tags.id}}` : ""}
             ${tags?.placeholder ? `placeholder="${tags?.placeholder}"` : ""}
             ${tags?.name ? `name="${tags?.name}"` : ""}
-          />\n\t\t`;
+            ${tags?.required ? `onBlur={handle${tags?.name}}` : ""}
+          />
+         ${
+           tags?.required
+             ? `<div style={{ color: "red" }}>
+         <h3>{state?.error${tags?.name}}</h3>
+       </div>`
+             : ""
+         }\n\t\t`;
           break;
         }
 
@@ -42,36 +59,56 @@ export default function getTags(tags, radiokeys, checkBox) {
             ${tags?.name ? `name="${tags?.name}"` : ""}
             ${tags?.min ? `min="${tags?.min}"` : ""}
             ${tags?.max ? `max="${tags?.max}"` : ""}
-          />\n\t\t`;
+            ${tags?.required ? `onBlur={handle${tags?.name}}` : ""}
+          />
+         ${
+           tags?.required
+             ? `<div style={{ color: "red" }}>
+         <h3>{state?.error${tags?.name}}</h3>
+       </div>`
+             : ""
+         }\n\t\t`;
           break;
         }
 
         case "number": {
           tag = `<${tags.tagName}
-                    ${tags.className ? `className="${tags.className}"` : ""}
-                    type="${tags.type}"
-                    onChange={handleChange}
-                    ${tags?.id ? `value={state.${tags?.id}}` : ""}
-                    ${tags?.name ? `name="${tags?.name}"` : ""}
-                    ${tags?.min ? `min="${tags?.min}"` : ""}
-                    ${tags?.max ? `max="${tags?.max}"` : ""}
-                   />\n\t\t`;
+            ${tags.className ? `className="${tags.className}"` : ""}
+            type="${tags.type}"
+            onChange={handleChange}
+            ${tags?.id ? `value={state.${tags?.id}}` : ""}
+            ${tags?.name ? `name="${tags?.name}"` : ""}
+            ${tags?.min ? `min="${tags?.min}"` : ""}
+            ${tags?.max ? `max="${tags?.max}"` : ""}
+            ${tags?.required ? `onBlur={handle${tags?.name}}` : ""}
+          />
+         ${
+           tags?.required
+             ? `<div style={{ color: "red" }}>
+         <h3>{state?.error${tags?.name}}</h3>
+       </div>`
+             : ""
+         }\n\t\t`;
           break;
         }
 
         case "password": {
           tag = `<${tags.tagName}
-                    ${tags.className ? `className="${tags.className}"` : ""}
-                    type="${tags.type}"
-                    onChange={handleChange}
-                    ${tags.id ? `value={state.${tags.id}}` : ""}
-                    ${
-                      tags?.placeholder
-                        ? `placeholder="${tags?.placeholder}"`
-                        : ""
-                    }
-                    ${tags?.name ? `name="${tags?.name}"` : ""}
-                 />\n\t\t`;
+            ${tags.className ? `className="${tags.className}"` : ""}
+            type="${tags.type}"
+            onChange={handleChange}
+            ${tags.id ? `value={state.${tags.id}}` : ""}
+            ${tags?.placeholder ? `placeholder="${tags?.placeholder}"` : ""}
+            ${tags?.name ? `name="${tags?.name}"` : ""}
+            ${tags?.required ? `onBlur={handle${tags?.name}}` : ""}
+          />
+         ${
+           tags?.required
+             ? `<div style={{ color: "red" }}>
+         <h3>{state?.error${tags?.name}}</h3>
+       </div>`
+             : ""
+         }\n\t\t`;
           break;
         }
 
@@ -79,12 +116,20 @@ export default function getTags(tags, radiokeys, checkBox) {
           tag = `<${tags.tagName}${
             tags.className ? `className="${tags.className}"` : ""
           }
-                    type="${tags.type}"
-                    onChange={handleChange}
-                    ${tags.id ? `value={state.${tags.id}}` : ""}
-                    ${tags?.name ? `name="${tags?.name}"` : ""}
-                    ${tags?.multiple ? "multiple" : ""}
-                />\n\t\t`;
+            type="${tags.type}"
+            onChange={handleChange}
+            ${tags.id ? `value={state.${tags.id}}` : ""}
+            ${tags?.name ? `name="${tags?.name}"` : ""}
+            ${tags?.multiple ? "multiple" : ""}
+            ${tags?.required ? `onBlur={handle${tags?.name}}` : ""}
+          />
+         ${
+           tags?.required
+             ? `<div style={{ color: "red" }}>
+         <h3>{state?.error${tags?.name}}</h3>
+       </div>`
+             : ""
+         }\n\t\t`;
           break;
         }
 
@@ -150,7 +195,15 @@ export default function getTags(tags, radiokeys, checkBox) {
               ${tags?.name ? `name="${tags?.name}"` : ""}
               ${tags?.min ? `min="${tags?.min}"` : ""}
               ${tags?.max ? `max="${tags?.max}"` : ""}
-           />`;
+              ${tags?.required ? `onBlur={handle${tags?.name}}` : ""}
+           />
+         ${
+           tags?.required
+             ? `<div style={{ color: "red" }}>
+         <h3>{state?.error${tags?.name}}</h3>
+       </div>`
+             : ""
+         }`;
           break;
         }
       }
@@ -172,15 +225,42 @@ export default function getTags(tags, radiokeys, checkBox) {
       break;
     }
 
+    case "ul": {
+      tag = `<${tags?.tagName} ${
+        tags.className ? `className="${tags.className}"` : ""
+      }
+      >
+          ${
+            tags.child
+              ? tags.child?.map((formChild) => {
+                  return getTags(formChild, radiokeys, checkBox);
+                })
+              : ""
+          }
+          </${tags?.tagName}>\n\t`;
+      break;
+    }
+
+    case "li": {
+      tag = `<${tags?.tagName} ${
+        tags.className ? `className="${tags.className}"` : ""
+      }>${tags.text}
+          ${
+            tags.child
+              ? tags.child?.map((formChild) => {
+                  return getTags(formChild, radiokeys, checkBox);
+                })
+              : ""
+          }
+          </${tags?.tagName}>\n\t`;
+      break;
+    }
+
     case "textarea": {
       tag = `<${tags.tagName}
         ${tags.className ? `className="${tags.className}"` : ""}
         onChange={handleChange}
-        ${
-          tags.text
-            ? `value={state.${tags.text}}`
-            : `value={state.${tags.value}}`
-        }
+        ${tags.text ? `value={state.${tags.text}}` : ""}
         ${tags?.placeholder ? `placeholder="${tags?.placeholder}"` : ""}
         ${tags?.cols ? `cols={${tags?.cols}}` : ""}
         ${tags?.rows ? `rows={${tags?.rows}}` : ""}
@@ -277,7 +357,7 @@ export default function getTags(tags, radiokeys, checkBox) {
     case "tbody": {
       tag = `<${tags?.tagName} ${
         tags.className ? `className="${tags.className}"` : ""
-      }>${tags.text ? tags.text : ""}
+      }>
           ${
             tags.child
               ? tags.child?.map((formChild) => {
@@ -307,7 +387,7 @@ export default function getTags(tags, radiokeys, checkBox) {
     case "th": {
       tag = `<${tags?.tagName} ${
         tags.className ? `className="${tags.className}"` : ""
-      }>${tags.text ? tags.text : ""}
+      }>
           ${
             tags.child
               ? tags.child?.map((formChild) => {
@@ -322,7 +402,7 @@ export default function getTags(tags, radiokeys, checkBox) {
     case "td": {
       tag = `<${tags?.tagName} ${
         tags.className ? `className="${tags.className}"` : ""
-      }>${tags.text ? tags.text : ""}
+      }>
           ${
             tags.child
               ? tags.child?.map((formChild) => {
