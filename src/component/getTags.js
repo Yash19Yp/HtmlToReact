@@ -1,32 +1,23 @@
-export default function getTags(tags, radiokeys, groupedRadiotag) {
+import { isEmpty } from "./common";
+
+// returns react component
+export default function getTags(tags, radiokeys, checkBox) {
   let tag = "";
-  // console.log("demo", tags, radiokeys, groupedRadiotag);
 
   switch (tags.tagName) {
-    // case "input": {
-    //   tag = `<${tags.tagName}
-    //              type="${tags.type}"
-    //              ${tags.type !== "submit" ? `onChange={handleChange}` : ""}
-    //              ${tags.id ? `value={state.${tags.id}}` : ""}
-    //              ${
-    //                tags?.placeholder ? `placeholder="${tags?.placeholder}"` : ""
-    //              }
-    //              ${tags?.name ? `name="${tags?.name}"` : ""}
-    //          />\n\t`;
-    //   break;
-    // }
-
     case "input": {
       switch (tags.type) {
         case "text": {
-          tag = `<${tags.tagName}
+          tag = `\n\t<${tags.tagName}
             ${tags.className ? `className="${tags.className}"` : ""}
             type="${tags.type}"
             onChange={handleChange}
             ${tags.id ? `value={state.${tags.id}}` : ""}
             ${tags?.placeholder ? `placeholder="${tags?.placeholder}"` : ""}
             ${tags?.name ? `name="${tags?.name}"` : ""}
-         />\n\t`;
+            ${tags?.min ? `min="${tags?.min}"` : ""}
+            ${tags?.max ? `max="${tags?.max}"` : ""}
+         />`;
           break;
         }
 
@@ -118,7 +109,6 @@ export default function getTags(tags, radiokeys, groupedRadiotag) {
         }
 
         case "radio": {
-          // tag = radioreturntag(tags, radiokeys, groupedRadiotag).join("\n\n\t");
           // tag = `<${tags.tagName}
           //           type="${tags.type}"
           //           ${tags?.id ? `id="${tags?.id}"` : ""}
@@ -136,7 +126,7 @@ export default function getTags(tags, radiokeys, groupedRadiotag) {
           //   ${tags.value ? `value="${tags.value}"` : ""}
           //   ${tags?.name ? `name="${tags?.name}"` : ""}
           //   ${tags?.checked ? `checked={${tags.checked}}` : ""}
-          //   onChange={handleChange}
+          //   onChange={handleToggle}
           // />\n\t`;
           break;
         }
@@ -150,7 +140,19 @@ export default function getTags(tags, radiokeys, groupedRadiotag) {
                  />\n\t\t`;
           break;
         }
-        default:
+        default: {
+          tag = `\n\t<${tags.tagName}
+              ${tags.className ? `className="${tags.className}"` : ""}
+              type="${tags.type}"
+              onChange={handleChange}
+              ${tags.id ? `value={state.${tags.id}}` : ""}
+              ${tags?.placeholder ? `placeholder="${tags?.placeholder}"` : ""}
+              ${tags?.name ? `name="${tags?.name}"` : ""}
+              ${tags?.min ? `min="${tags?.min}"` : ""}
+              ${tags?.max ? `max="${tags?.max}"` : ""}
+           />`;
+          break;
+        }
       }
       return tag;
     }
@@ -162,7 +164,7 @@ export default function getTags(tags, radiokeys, groupedRadiotag) {
           ${
             tags.child
               ? tags.child?.map((formChild) => {
-                  return getTags(formChild, radiokeys, groupedRadiotag);
+                  return getTags(formChild, radiokeys, checkBox);
                 })
               : ""
           }
@@ -193,9 +195,7 @@ export default function getTags(tags, radiokeys, groupedRadiotag) {
           ${
             tags.child
               ? tags.child?.map((formChild) => {
-                  return getTags(
-                    getTags(formChild, radiokeys, groupedRadiotag)
-                  );
+                  return getTags(formChild, radiokeys, checkBox);
                 })
               : ""
           }
@@ -210,7 +210,7 @@ export default function getTags(tags, radiokeys, groupedRadiotag) {
             ${
               tags.child
                 ? tags.child?.map((formChild) => {
-                    return getTags(formChild, radiokeys, groupedRadiotag);
+                    return getTags(formChild, radiokeys, checkBox);
                   })
                 : ""
             }
@@ -225,7 +225,7 @@ export default function getTags(tags, radiokeys, groupedRadiotag) {
             ${
               tags.child
                 ? tags.child?.map((formChild) => {
-                    return getTags(formChild, radiokeys, groupedRadiotag);
+                    return getTags(formChild, radiokeys, checkBox);
                   })
                 : ""
             }
@@ -234,16 +234,16 @@ export default function getTags(tags, radiokeys, groupedRadiotag) {
     }
 
     case "label": {
-      tag = `<${tags.tagName} ${
+      tag = `\n\t<${tags.tagName} ${
         tags.className ? `className="${tags.className}"` : ""
       } ${tags.for && `for="${tags.for}"`}>${tags.text}
              ${
                tags.child
                  ? tags.child?.map((formChild) => {
-                     return getTags(formChild, radiokeys, groupedRadiotag);
+                     return getTags(formChild, radiokeys, checkBox);
                    })
                  : ""
-             }</${tags.tagName}>\n\t\t`;
+             }</${tags.tagName}>`;
       break;
     }
 
@@ -266,7 +266,7 @@ export default function getTags(tags, radiokeys, groupedRadiotag) {
           ${
             tags.child
               ? tags.child?.map((formChild) => {
-                  return getTags(formChild, radiokeys, groupedRadiotag);
+                  return getTags(formChild, radiokeys, checkBox);
                 })
               : ""
           }
@@ -281,7 +281,7 @@ export default function getTags(tags, radiokeys, groupedRadiotag) {
           ${
             tags.child
               ? tags.child?.map((formChild) => {
-                  return getTags(formChild, radiokeys, groupedRadiotag);
+                  return getTags(formChild, radiokeys, checkBox);
                 })
               : ""
           }
@@ -296,7 +296,7 @@ export default function getTags(tags, radiokeys, groupedRadiotag) {
           ${
             tags.child
               ? tags.child?.map((formChild) => {
-                  return getTags(formChild, radiokeys, groupedRadiotag);
+                  return getTags(formChild, radiokeys, checkBox);
                 })
               : ""
           }
@@ -311,7 +311,7 @@ export default function getTags(tags, radiokeys, groupedRadiotag) {
           ${
             tags.child
               ? tags.child?.map((formChild) => {
-                  return getTags(formChild, radiokeys, groupedRadiotag);
+                  return getTags(formChild, radiokeys, checkBox);
                 })
               : ""
           }
@@ -326,7 +326,7 @@ export default function getTags(tags, radiokeys, groupedRadiotag) {
           ${
             tags.child
               ? tags.child?.map((formChild) => {
-                  return getTags(formChild, radiokeys, groupedRadiotag);
+                  return getTags(formChild, radiokeys, checkBox);
                 })
               : ""
           }
@@ -339,7 +339,7 @@ export default function getTags(tags, radiokeys, groupedRadiotag) {
           ${
             tags?.child
               ? tags.child?.map((formChild) => {
-                  return getTags(formChild, radiokeys, groupedRadiotag);
+                  return getTags(formChild, radiokeys, checkBox);
                 })
               : ""
           }
@@ -356,7 +356,7 @@ export default function getTags(tags, radiokeys, groupedRadiotag) {
           ${
             tags.child
               ? tags.child?.map((formChild) => {
-                  return getTags(formChild, radiokeys, groupedRadiotag);
+                  return getTags(formChild, radiokeys, checkBox);
                 })
               : ""
           }
@@ -369,7 +369,7 @@ export default function getTags(tags, radiokeys, groupedRadiotag) {
           ${
             tags.child
               ? tags.child?.map((formChild) => {
-                  return getTags(formChild, radiokeys, groupedRadiotag);
+                  return getTags(formChild, radiokeys, checkBox);
                 })
               : ""
           }
@@ -382,7 +382,7 @@ export default function getTags(tags, radiokeys, groupedRadiotag) {
           ${
             tags.child
               ? tags.child?.map((formChild) => {
-                  return getTags(formChild, radiokeys, groupedRadiotag);
+                  return getTags(formChild, radiokeys, checkBox);
                 })
               : ""
           }
@@ -397,7 +397,7 @@ export default function getTags(tags, radiokeys, groupedRadiotag) {
           ${
             tags.child
               ? tags.child?.map((formChild) => {
-                  return getTags(formChild, radiokeys, groupedRadiotag);
+                  return getTags(formChild, radiokeys, checkBox);
                 })
               : ""
           }</${tags.tagName}>\n\t`;
@@ -409,7 +409,7 @@ export default function getTags(tags, radiokeys, groupedRadiotag) {
           ${
             tags.child
               ? tags.child?.map((formChild) => {
-                  return getTags(formChild, radiokeys, groupedRadiotag);
+                  return getTags(formChild, radiokeys, checkBox);
                 })
               : ""
           }
@@ -422,12 +422,12 @@ export default function getTags(tags, radiokeys, groupedRadiotag) {
           ${
             tags.child
               ? tags.child?.map((formChild) => {
-                  return getTags(formChild, radiokeys, groupedRadiotag);
+                  return getTags(formChild, radiokeys, checkBox);
                 })
               : ""
           }
-          ${getCheckboxtag()}
-          ${radioreturntag(radiokeys, groupedRadiotag)}
+          ${getCheckboxtag(checkBox)}
+          ${radioreturntag(radiokeys)}
           </${tags?.tagName}>\n\t`;
       break;
     }
@@ -435,22 +435,22 @@ export default function getTags(tags, radiokeys, groupedRadiotag) {
     case "select": {
       tag = `<${tags?.tagName} 
             type="${tags.type}"
+            value={state.value}
             ${tags.type !== "submit" ? `onChange={handleChange}` : ""}
-            ${tags.id ? `value={${tags.id}}` : ""}
             ${tags?.name ? `name="${tags?.name}"` : ""}
             ${tags.className ? `className="${tags.className}"` : ""}
           >
           ${
-            // tags.child.length <= 10 ?
-            `{${tags?.id}option.map((option) => (
+            tags.child.length > 10
+              ? `{state.option${tags?.id}.map((option) => (
             <option value={option.value}>{option.label}</option>
           ))}`
-            // : ""
+              : `{option${tags?.id}.map((option) => (
+              <option value={option.value}>{option.label}</option>
+            ))}`
           }
           </${tags?.tagName}>\n\t`;
       break;
-      // return options;
-      // ${(options = getOption(tags))}
     }
 
     default:
@@ -459,35 +459,41 @@ export default function getTags(tags, radiokeys, groupedRadiotag) {
   return tag.replaceAll(",", "").replace(/^\s*\n/gm, "");
 }
 
-export function radioreturntag(radiokeys, groupedRadiotag) {
-  const demo = radiokeys?.map((key) => {
+//returns radio component
+export function radioreturntag(radiokeys) {
+  const radio = radiokeys?.map((key) => {
     return `\n\n\t{${key}radio?.map((radioTags)=>(
         <div>
-          <label>{radioTags.name}</label>
-          <input 
-            type="radio",
-            name={radioTags?.name},
-            value={radioTags?.value},
-            id={radioTags?.id}
-            onChange={handleChange}
-          />
+        <input 
+        type="radio"
+        name={radioTags?.name}
+        value={radioTags?.value}
+        id={radioTags?.id}
+        onChange={handleChange}
+        />
+        <label>{radioTags.value}</label>
         </div>
       ))}`;
   });
-  return demo;
+  return radio;
 }
 
-export function getCheckboxtag() {
-  return `\n\n\t{checkBox?.map((cbTag)=>(
-        <div>
-          <label>{cbTag.name}</label>
-          <input 
-            type="checkbox",
-            name={cbTag?.name},
-            value={cbTag?.value},
-            id={cbTag?.id}
-            onChange={handleCheck}
-          />
+//returns checkbox component
+export function getCheckboxtag(checkBox) {
+  const check = !isEmpty(checkBox)
+    ? `\n\n\t{checkBox?.map((cbTag)=>(
+    <div>
+    <input 
+        type="checkbox"
+        name={cbTag?.name}
+        value={cbTag?.value}
+        id={cbTag?.id}
+        onChange={handleToggle}
+        checked={checked[cbTag?.name]}
+        />
+        <label>{cbTag.name}</label>
         </div>
-        ))}`;
+        ))}`
+    : "";
+  return check;
 }

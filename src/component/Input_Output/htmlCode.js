@@ -6,41 +6,28 @@ import alog from "../../DomParser";
 
 const parser = new DOMParser();
 
-let html = "";
 let output;
-let radioTag;
+let inputTag;
+
 const HtmlCode = () => {
   const [state, setState] = useState({
-    formTag: "",
-    labelTag: "",
-    inputTag: "",
-    optionTag: "",
     selectTag: "",
-    radioTag: "",
   });
 
   const onInputChange = (e) => {
     const newValue = e.currentTarget.value;
-    html = parser.parseFromString(newValue, "text/html");
-    let root = parse(newValue);
 
-    output = alog([...html.body.children]);
+    let html = parser.parseFromString(newValue, "text/html");
+    output = alog([...html.body.children]); // contains whole body parsed content
 
-    const form = root.getElementsByTagName("form");
-    const label = root.getElementsByTagName("label");
-    const input = root.getElementsByTagName("input");
-    const Tag = parser.parseFromString(input, "text/html");
-    radioTag = alog([...Tag.body.children]);
-    const select = root.getElementsByTagName("select");
-    const option = root.getElementsByTagName("option");
+    let root = parse(newValue); //For parshing html content
+    const input = root.getElementsByTagName("input"); //Takes all input tags
+    const Tag = parser.parseFromString(input, "text/html"); // Takes all html elements
+    inputTag = alog([...Tag.body.children]);
 
-    setState({
-      formTag: form,
-      labelTag: label,
-      inputTag: input,
-      selectTag: select,
-      optionTag: option,
-    });
+    const select = root.getElementsByTagName("select"); //Takes all select tags
+
+    setState({ selectTag: select });
   };
 
   return (
@@ -48,13 +35,9 @@ const HtmlCode = () => {
       <div className="title">
         <span>Html</span>
         <ReactConverter
-          form={state.formTag}
-          option={state.optionTag}
           select={state.selectTag}
-          label={state.labelTag}
-          input={state.inputTag}
           output={output}
-          radioTag={radioTag}
+          inputTags={inputTag}
         />
       </div>
       <textarea className="textArea" onChange={onInputChange} />
