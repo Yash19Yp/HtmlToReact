@@ -9,17 +9,19 @@ const ReactCodeonverter = (props) => {
   const { setCodeString } = React.useContext(editorContext);
   let radiokeys = [];
 
+  //defines constants for dropdown
   const getOption = (tag, index) => {
-    const option = `const ${
+    const option = `const option${
       tag?.id ? tag?.id : index + 1
-    }option = [${tag?.child?.map((options) => {
+    } = [${tag?.child?.map((options) => {
       return `\n\t{ label: "${options?.text}", value: "${options?.value}" }`;
     })}]\n\t`;
     return option;
   };
 
+  //creates object for radio constants
   const radio = pruneEmpty(
-    props?.radioTag?.map((radioTag) => {
+    props?.inputTags?.map((radioTag) => {
       return (
         radioTag.type === "radio" && {
           id: radioTag?.id,
@@ -30,8 +32,9 @@ const ReactCodeonverter = (props) => {
     })
   );
 
+  //creates object for checkbox constants
   const checkBox = pruneEmpty(
-    props?.radioTag?.map((checkBox) => {
+    props?.inputTags?.map((checkBox) => {
       return (
         checkBox.type === "checkbox" && {
           id: checkBox?.id,
@@ -42,6 +45,7 @@ const ReactCodeonverter = (props) => {
     })
   );
 
+  //groups all radio constats by their name
   function groupBy(objectArray, property) {
     const tempVar = [];
     return objectArray?.reduce((acc, obj) => {
@@ -63,6 +67,7 @@ const ReactCodeonverter = (props) => {
   }
   const groupedRadiotag = groupBy(radio, "name");
 
+  //defines radio constants
   const getRadioConst = () => {
     const radioTags = radiokeys
       .map((key) => {
@@ -77,7 +82,8 @@ const ReactCodeonverter = (props) => {
       .join("");
     return radioTags;
   };
-  console.log("boc", checkBox);
+
+  //defines checkbox constants
   const getCheckBox = () => {
     const check = `const checkBox = [${checkBox?.map((cbTag, index) => {
       return `\n\t{id: "${cbTag?.id ? cbTag?.id : `id${index + 1}`}",name: "${
@@ -87,43 +93,108 @@ const ReactCodeonverter = (props) => {
     return check;
   };
 
+  // API function for dropdown morethan 10 options
   const getOptionAPI = (tag, index) => {
-    const option = `const ${tag.id ? tag.id : index + 1}callApi = () => {
-              axios
-              get(${tag.id ? tag.id : index + 1}optionApi)
-             .then((res) => {
-              const data = res?.data
-                  setState({ ${tag.id ? tag.id : index + 1}option: data });
-              })
-             .catch(function (error) {
-                 console.log(error);
-              });
-              }\n
-              React.useEffect(() => {
-               ${tag.id ? tag.id : index + 1}callApi();
-              }, []);`;
+    const option = `const callApi${tag.id ? tag.id : index + 1} = () => {
+        axios
+        .get(${tag.id ? tag.id : index + 1}optionApi)
+        .then((res) => {
+          const data = res?.data
+          setState({ ${tag.id ? tag.id : index + 1}option: data });
+        })
+       .catch(function (error) {
+          console.log(error);
+        });
+      }\n
+      React.useEffect(() => {
+         ${tag.id ? tag.id : index + 1}callApi();
+      }, []);`;
     return option;
   };
 
+  //useState variables
   const getStateVar = () => {
-    const stateVAr = props?.input?.map((inputs) => {
-      return inputs?.attributes?.name
-        ? `\n\t${inputs?.attributes?.name}: ""`
+    const stateVar = props?.inputTags?.map((inputs) => {
+      return inputs?.type === "radio"
+        ? inputs?.name
+          ? `\n\t${inputs?.name}: ""`
+          : ""
+        : inputs?.type === "checkbox"
+        ? ""
+        : inputs?.name
+        ? `\n\t${inputs?.name}: ""`
+        : inputs?.id
+        ? `\n\t${inputs?.id}: ""`
         : "";
     });
 
-    var stateArray = stateVAr.filter(function (elem, pos) {
-      return stateVAr.indexOf(elem) === pos;
+    var stateArray = stateVar?.filter(function (elem, pos) {
+      return stateVar?.indexOf(elem) === pos;
     });
 
-    return stateArray;
+    return pruneEmpty(stateArray);
   };
 
+  //useState variables
+  const getOptionvar = () => {
+    const optionVar = props?.select
+      ?.map((childSelect) => {
+        const Tag = parser.parseFromString(childSelect, "text/html");
+        let selectTag = alog([...Tag.body.children]);
+
+        return selectTag?.map((select, index) => {
+          return select?.child?.length > 10
+            ? `\n\toption${select?.id ? select?.id : index + 1}: []`
+            : "";
+        });
+      })
+      .join("");
+
+    return optionVar;
+  };
+
+  const getSelectvar = () => {
+    const optionVar = props?.select?.map((childSelect) => {
+      const Tag = parser.parseFromString(childSelect, "text/html");
+      let selectTag = alog([...Tag.body.children]);
+      return selectTag?.map((select) => {
+        return select?.id
+          ? `\n\t${select?.id}: ""`
+          : select?.name
+          ? `\n\t${select?.name}: ""`
+          : "";
+      });
+    });
+
+    return optionVar;
+  };
+
+  //checkbox variables
+  const getCheckboxvar = () => {
+    const stateVar = props?.inputTags?.map((inputs) => {
+      return inputs?.type === "checkbox"
+        ? inputs?.name
+          ? `\n\t${inputs?.name}: ${inputs?.checked ? `true` : `false`}`
+          : inputs?.id
+          ? `\n\t${inputs?.id}: ${inputs?.checked ? `true` : `false`}`
+          : ""
+        : "";
+    });
+
+    var stateArray = stateVar?.filter(function (elem, pos) {
+      return stateVar?.indexOf(elem) === pos;
+    });
+
+    return pruneEmpty(stateArray);
+  };
+
+  //function for returning whole code
   const onInputChange = () => {
     const string = `
     import React from 'react';
     import axios from 'axios';
 
+    const submitApi = "Enter your submit API"; 
     ${!isEmpty(radio) ? getRadioConst() : ""}
     ${!isEmpty(checkBox) ? getCheckBox() : ""}
 
@@ -133,36 +204,44 @@ const ReactCodeonverter = (props) => {
         let selectTag = alog([...Tag.body.children]);
         return selectTag?.map((select, index) => {
           return select?.child?.length > 10
-            ? `const ${
+            ? `\n\tconst optionApi${
                 select?.id ? select?.id : index + 1
-              }optionApi = "Enter Your API here";\n\t`
+              } = "Enter Your options API here";\n\t`
             : getOption(select, index);
         });
       })
       .join("")}
 
-    function form(){
+    function Form(){
 
-      const [state, setState] = React.useState({
-        ${getStateVar()}
-        ${props?.output
-          ?.map((tags) => {
-            return tags?.child
-              ?.map((t, index) => {
-                return t.tagName === "select"
-                  ? t.child.length > 10
-                    ? `${t.id ? t.id : index + 1}option: [],\n\t`
-                    : ""
-                  : "";
-              })
-              .join("");
-          })
-          .join("")}
+      const [state, setState] = React.useState({${getStateVar()}${getOptionvar()}${getSelectvar()}
+      });
+      const [checked, setChecked] = React.useState({${getCheckboxvar()}
       });
 
       const handleChange = e => {
-        setState({...state, [e.target.name]: e.target.value})
-      } 
+        setState({...state, [e.target.name]: e.target.value});
+      }; 
+
+      const handleToggle = ({ target }) => {
+        setChecked((s) => ({ ...s, [target.name]: !s[target.name] }));
+      };
+      
+      const handleSubmit = async (event) => {
+        event.preventDefault();
+        const formData = {
+          ...state,
+          ...checked,
+        };
+        await axios
+          .post(submitApi, { formData })
+          .then((res) => {
+            console.log(res);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      };
 
       ${props?.select
         ?.map((childSelect) => {
@@ -179,14 +258,15 @@ const ReactCodeonverter = (props) => {
       return(
         ${props?.output
           ?.map((tags) => {
-            return getTags(tags, radiokeys, groupedRadiotag);
+            return getTags(tags, radiokeys, checkBox);
           })
           .join("")}
       );
     }
-    export default form;
+    export default Form;
     `;
-    setCodeString(string);
+
+    isEmpty(props?.output) ? setCodeString("") : setCodeString(string);
   };
 
   return (
@@ -202,15 +282,3 @@ const ReactCodeonverter = (props) => {
 };
 
 export default ReactCodeonverter;
-
-// const checkboxConst = [ ${props?.input
-//   ?.map((input) => {
-//     const Tag = parser.parseFromString(input, "text/html");
-//     let checkboxTag = alog([...Tag.body.children]);
-//     return checkboxTag.map((check) => {
-//       return check.type === "checkbox"
-//         ? `\n\t{id: "${check?.id}",name: "${check?.name}", value: "${check?.value}"},`
-//         : "";
-//     });
-//   })
-//   .join("")}]

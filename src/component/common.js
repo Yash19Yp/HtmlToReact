@@ -1,3 +1,4 @@
+//removes empty or false value from array
 export function pruneEmpty(arr) {
   arr = arr?.filter(function (n) {
     return n !== undefined && n !== null && n !== false && n !== 0 && n !== "";
@@ -5,6 +6,7 @@ export function pruneEmpty(arr) {
   return arr;
 }
 
+//checks empty value
 export const isEmpty = (input, options) => {
   options = { isEmpty: [], isNotEmpty: [], ...options };
 
