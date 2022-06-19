@@ -226,6 +226,48 @@ const ReactCodeonverter = (props) => {
       const handleToggle = ({ target }) => {
         setChecked((s) => ({ ...s, [target.name]: !s[target.name] }));
       };
+
+      ${props?.inputTags
+        ?.map((inputs) => {
+          return inputs?.required
+            ? inputs?.type === "radio"
+              ? `const handle${inputs?.name}=(e)=> {
+              var tempVar = e.target.value;
+              var error${inputs?.name} = "";
+          
+              if (!state.${inputs?.name}) {
+                error${inputs?.name} = "Please Provide ${inputs?.name} !";
+              }
+              setState({
+                error${inputs?.name}: error${inputs?.name},
+              });
+            }\n\t`
+              : inputs?.type === "checkbox"
+              ? `const handle${inputs?.name}=(e)=> {
+                  var tempVar = e.target.value;
+                  var error${inputs?.name} = "";
+              
+                  if (tempVar.length === 0) {
+                    error${inputs?.name} = "Please Provide ${inputs?.name} !";
+                  }
+                  setState({
+                    error${inputs?.name}: error${inputs?.name},
+                  });
+                }\n\t`
+              : `const handle${inputs?.name}=(e)=> {
+              var tempVar = e.target.value;
+              var error${inputs?.name} = "";
+          
+              if (tempVar.length === 0) {
+                error${inputs?.name} = "Please Provide ${inputs?.name} !";
+              }
+              setState({
+                error${inputs?.name}: error${inputs?.name},
+              });
+            }\n\t`
+            : "";
+        })
+        .join("")}
       
       const handleSubmit = async (event) => {
         event.preventDefault();
