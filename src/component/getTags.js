@@ -271,7 +271,7 @@ export default function getTags(tags, radiokeys, checkBox) {
     case "button": {
       tag = `<${tags?.tagName} ${
         tags.className ? `className="${tags.className}"` : ""
-      } ${tags?.type ? `type=${tags?.type}` : ""}>${tags.text}
+      } ${tags?.type ? `type="${tags?.type}"` : ""}>${tags.text}
           ${
             tags.child
               ? tags.child?.map((formChild) => {
