@@ -65,6 +65,7 @@ const ReactCodeonverter = (props) => {
       return acc;
     }, {});
   }
+
   const groupedRadiotag = groupBy(radio, "name");
 
   //defines radio constants
@@ -97,7 +98,7 @@ const ReactCodeonverter = (props) => {
   const getOptionAPI = (tag, index) => {
     const option = `const callApi${tag.id ? tag.id : index + 1} = () => {
         axios
-        .get(${tag.id ? tag.id : index + 1}optionApi)
+        .get(optionApi${tag.id ? tag.id : index + 1})
         .then((res) => {
           const data = res?.data
           setState({ ${tag.id ? tag.id : index + 1}option: data });
@@ -107,7 +108,7 @@ const ReactCodeonverter = (props) => {
         });
       }\n
       React.useEffect(() => {
-         ${tag.id ? tag.id : index + 1}callApi();
+         callApi${tag.id ? tag.id : index + 1}();
       }, []);`;
     return option;
   };
@@ -117,14 +118,14 @@ const ReactCodeonverter = (props) => {
     const stateVar = props?.inputTags?.map((inputs) => {
       return inputs?.type === "radio"
         ? inputs?.name
-          ? `\n\t${inputs?.name}: ""`
+          ? `\n\t${inputs?.name}: "",`
           : ""
         : inputs?.type === "checkbox"
         ? ""
         : inputs?.name
-        ? `\n\t${inputs?.name}: ""`
+        ? `\n\t${inputs?.name}: "",`
         : inputs?.id
-        ? `\n\t${inputs?.id}: ""`
+        ? `\n\t${inputs?.id}: "",`
         : "";
     });
 
@@ -144,7 +145,7 @@ const ReactCodeonverter = (props) => {
 
         return selectTag?.map((select, index) => {
           return select?.child?.length > 10
-            ? `\n\toption${select?.id ? select?.id : index + 1}: []`
+            ? `\n\toption${select?.id ? select?.id : index + 1}: [],`
             : "";
         });
       })
@@ -159,9 +160,9 @@ const ReactCodeonverter = (props) => {
       let selectTag = alog([...Tag.body.children]);
       return selectTag?.map((select) => {
         return select?.id
-          ? `\n\t${select?.id}: ""`
+          ? `\n\t${select?.id}: "",`
           : select?.name
-          ? `\n\t${select?.name}: ""`
+          ? `\n\t${select?.name}: "",`
           : "";
       });
     });
@@ -214,7 +215,9 @@ const ReactCodeonverter = (props) => {
 
     function Form(){
 
-      const [state, setState] = React.useState({${getStateVar()}${getOptionvar()}${getSelectvar()}
+      const [state, setState] = React.useState({${getStateVar().join(
+        ""
+      )}${getOptionvar()}${getSelectvar().join("")}
       });
 
       const handleChange = e => {
