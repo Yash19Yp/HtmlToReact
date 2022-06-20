@@ -1,4 +1,4 @@
-import { isEmpty } from "./common";
+import { getStyle, isEmpty } from "./common";
 
 // returns react component
 export default function getTags(tags, radiokeys, checkBox) {
@@ -10,6 +10,7 @@ export default function getTags(tags, radiokeys, checkBox) {
         case "text": {
           tag = `\n\t<${tags.tagName}
             ${tags.className ? `className="${tags.className}"` : ""}
+            ${!isEmpty(tags?.style) && getStyle(tags)}
             type="${tags.type}"
             onChange={handleChange}
             ${tags.id ? `value={state.${tags.id}}` : ""}
@@ -33,6 +34,7 @@ export default function getTags(tags, radiokeys, checkBox) {
         case "email": {
           tag = `<${tags.tagName}
             ${tags.className ? `className="${tags.className}"` : ""}
+            ${!isEmpty(tags?.style) && getStyle(tags)}
             type="${tags.type}"
             onChange={handleChange}
             ${tags.id ? `value={state.${tags.id}}` : ""}
@@ -53,6 +55,7 @@ export default function getTags(tags, radiokeys, checkBox) {
         case "date": {
           tag = `<${tags.tagName}
             ${tags.className ? `className="${tags.className}"` : ""}
+            ${!isEmpty(tags?.style) && getStyle(tags)}
             type="${tags.type}"
             onChange={handleChange}
             ${tags.id ? `value={state.${tags.id}}` : ""}
@@ -74,6 +77,7 @@ export default function getTags(tags, radiokeys, checkBox) {
         case "number": {
           tag = `<${tags.tagName}
             ${tags.className ? `className="${tags.className}"` : ""}
+            ${!isEmpty(tags?.style) && getStyle(tags)}
             type="${tags.type}"
             onChange={handleChange}
             ${tags?.id ? `value={state.${tags?.id}}` : ""}
@@ -95,6 +99,7 @@ export default function getTags(tags, radiokeys, checkBox) {
         case "password": {
           tag = `<${tags.tagName}
             ${tags.className ? `className="${tags.className}"` : ""}
+            ${!isEmpty(tags?.style) && getStyle(tags)}
             type="${tags.type}"
             onChange={handleChange}
             ${tags.id ? `value={state.${tags.id}}` : ""}
@@ -116,6 +121,7 @@ export default function getTags(tags, radiokeys, checkBox) {
           tag = `<${tags.tagName}${
             tags.className ? `className="${tags.className}"` : ""
           }
+            ${!isEmpty(tags?.style) && getStyle(tags)}
             type="${tags.type}"
             onChange={handleChange}
             ${tags.id ? `value={state.${tags.id}}` : ""}
@@ -136,6 +142,7 @@ export default function getTags(tags, radiokeys, checkBox) {
         case "button": {
           tag = `<${tags.tagName}
                     ${tags.className ? `className="${tags.className}"` : ""}
+                    ${!isEmpty(tags?.style) && getStyle(tags)}
                     type="${tags.type}"
                     ${tags.value ? `value="${tags.value}"` : ""}
                     ${tags?.name ? `name="${tags?.name}"` : ""}
@@ -145,6 +152,7 @@ export default function getTags(tags, radiokeys, checkBox) {
 
         case "submit": {
           tag = `<${tags.tagName}
+                  ${!isEmpty(tags?.style) && getStyle(tags)}
                   type="${tags.type}"
                   ${tags.className ? `className="${tags.className}"` : ""}
                   ${tags.value ? `value="${tags.value}"` : ""}
@@ -179,6 +187,7 @@ export default function getTags(tags, radiokeys, checkBox) {
         case "reset": {
           tag = `<${tags.tagName}
                     type="${tags.type}"
+                    ${!isEmpty(tags?.style) && getStyle(tags)}
                     ${tags.className ? `className="${tags.className}"` : ""}
                     ${tags.value ? `value="${tags.value}"` : ""}
                     ${tags?.name ? `name="${tags?.name}"` : ""}
@@ -188,6 +197,7 @@ export default function getTags(tags, radiokeys, checkBox) {
         default: {
           tag = `\n\t<${tags.tagName}
               ${tags.className ? `className="${tags.className}"` : ""}
+              ${!isEmpty(tags?.style) && getStyle(tags)}
               type="${tags.type}"
               onChange={handleChange}
               ${tags.id ? `value={state.${tags.id}}` : ""}
@@ -213,7 +223,7 @@ export default function getTags(tags, radiokeys, checkBox) {
     case "div": {
       tag = `<${tags?.tagName} ${
         tags.className ? `className="${tags.className}"` : ""
-      }>
+      } ${!isEmpty(tags?.style) && getStyle(tags)}>
           ${
             tags.child
               ? tags.child?.map((formChild) => {
@@ -228,7 +238,7 @@ export default function getTags(tags, radiokeys, checkBox) {
     case "ul": {
       tag = `<${tags?.tagName} ${
         tags.className ? `className="${tags.className}"` : ""
-      }
+      }${!isEmpty(tags?.style) && getStyle(tags)}
       >
           ${
             tags.child
@@ -244,7 +254,7 @@ export default function getTags(tags, radiokeys, checkBox) {
     case "li": {
       tag = `<${tags?.tagName} ${
         tags.className ? `className="${tags.className}"` : ""
-      }>${tags.text}
+      }${!isEmpty(tags?.style) && getStyle(tags)}>${tags.text}
           ${
             tags.child
               ? tags.child?.map((formChild) => {
@@ -259,8 +269,15 @@ export default function getTags(tags, radiokeys, checkBox) {
     case "textarea": {
       tag = `<${tags.tagName}
         ${tags.className ? `className="${tags.className}"` : ""}
+        ${!isEmpty(tags?.style) && getStyle(tags)}
         onChange={handleChange}
-        ${tags.text ? `value={state.${tags.text}}` : ""}
+        ${
+          !isEmpty(tags?.value)
+            ? `value={state.${tags.value}}`
+            : !isEmpty(tags?.text)
+            ? `value={state.${tags.text}}`
+            : ""
+        }
         ${tags?.placeholder ? `placeholder="${tags?.placeholder}"` : ""}
         ${tags?.cols ? `cols={${tags?.cols}}` : ""}
         ${tags?.rows ? `rows={${tags?.rows}}` : ""}
@@ -271,7 +288,9 @@ export default function getTags(tags, radiokeys, checkBox) {
     case "button": {
       tag = `<${tags?.tagName} ${
         tags.className ? `className="${tags.className}"` : ""
-      } ${tags?.type ? `type="${tags?.type}"` : ""}>${tags.text}
+      } ${tags?.type ? `type="${tags?.type}"` : ""}${
+        !isEmpty(tags?.style) && getStyle(tags)
+      }>${tags.text}
           ${
             tags.child
               ? tags.child?.map((formChild) => {
@@ -286,7 +305,7 @@ export default function getTags(tags, radiokeys, checkBox) {
     case "fieldset": {
       tag = `<${tags?.tagName} ${
         tags.className ? `className="${tags.className}"` : ""
-      }>
+      }${!isEmpty(tags?.style) && getStyle(tags)}>
             ${
               tags.child
                 ? tags.child?.map((formChild) => {
@@ -301,7 +320,7 @@ export default function getTags(tags, radiokeys, checkBox) {
     case "legend": {
       tag = `<${tags?.tagName} ${
         tags.className ? `className="${tags.className}"` : ""
-      }>${tags.text}
+      }${!isEmpty(tags?.style) && getStyle(tags)}>${tags.text}
             ${
               tags.child
                 ? tags.child?.map((formChild) => {
@@ -316,7 +335,9 @@ export default function getTags(tags, radiokeys, checkBox) {
     case "label": {
       tag = `\n\t<${tags.tagName} ${
         tags.className ? `className="${tags.className}"` : ""
-      } ${tags.for && `for="${tags.for}"`}>${tags.text}
+      } ${tags.for && `for="${tags.for}"`}${
+        !isEmpty(tags?.style) && getStyle(tags)
+      }>${tags.text}
              ${
                tags.child
                  ? tags.child?.map((formChild) => {
@@ -342,7 +363,7 @@ export default function getTags(tags, radiokeys, checkBox) {
     case "table": {
       tag = `<${tags?.tagName} ${
         tags.className ? `className="${tags.className}"` : ""
-      }>
+      }${!isEmpty(tags?.style) && getStyle(tags)}>
           ${
             tags.child
               ? tags.child?.map((formChild) => {
@@ -357,7 +378,7 @@ export default function getTags(tags, radiokeys, checkBox) {
     case "tbody": {
       tag = `<${tags?.tagName} ${
         tags.className ? `className="${tags.className}"` : ""
-      }>
+      }${!isEmpty(tags?.style) && getStyle(tags)}>
           ${
             tags.child
               ? tags.child?.map((formChild) => {
@@ -372,7 +393,7 @@ export default function getTags(tags, radiokeys, checkBox) {
     case "tr": {
       tag = `<${tags?.tagName} ${
         tags.className ? `className="${tags.className}"` : ""
-      }>
+      }${!isEmpty(tags?.style) && getStyle(tags)}>
           ${
             tags.child
               ? tags.child?.map((formChild) => {
@@ -387,7 +408,7 @@ export default function getTags(tags, radiokeys, checkBox) {
     case "th": {
       tag = `<${tags?.tagName} ${
         tags.className ? `className="${tags.className}"` : ""
-      }>
+      }${!isEmpty(tags?.style) && getStyle(tags)}>
           ${
             tags.child
               ? tags.child?.map((formChild) => {
@@ -402,7 +423,7 @@ export default function getTags(tags, radiokeys, checkBox) {
     case "td": {
       tag = `<${tags?.tagName} ${
         tags.className ? `className="${tags.className}"` : ""
-      }>
+      }${!isEmpty(tags?.style) && getStyle(tags)}>
           ${
             tags.child
               ? tags.child?.map((formChild) => {
@@ -415,7 +436,9 @@ export default function getTags(tags, radiokeys, checkBox) {
     }
 
     case "h1": {
-      tag = `<${tags.tagName}>${tags.text}
+      tag = `<${tags.tagName}${!isEmpty(tags?.style) && getStyle(tags)}>${
+        tags.text
+      }
           ${
             tags?.child
               ? tags.child?.map((formChild) => {
@@ -427,12 +450,14 @@ export default function getTags(tags, radiokeys, checkBox) {
       break;
     }
     case "hr": {
-      tag = `<${tags.tagName}/>\n\t`;
+      tag = `<${tags.tagName}${!isEmpty(tags?.style) && getStyle(tags)}/>\n\t`;
       break;
     }
 
     case "h2": {
-      tag = `<${tags.tagName}>${tags.text}
+      tag = `<${tags.tagName}${!isEmpty(tags?.style) && getStyle(tags)}>${
+        tags.text
+      }
           ${
             tags.child
               ? tags.child?.map((formChild) => {
@@ -445,7 +470,9 @@ export default function getTags(tags, radiokeys, checkBox) {
     }
 
     case "h3": {
-      tag = `<${tags.tagName}>${tags.text}
+      tag = `<${tags.tagName}${!isEmpty(tags?.style) && getStyle(tags)}>${
+        tags.text
+      }
           ${
             tags.child
               ? tags.child?.map((formChild) => {
@@ -458,7 +485,9 @@ export default function getTags(tags, radiokeys, checkBox) {
     }
 
     case "h4": {
-      tag = `<${tags.tagName}>${tags.text}
+      tag = `<${tags.tagName}${!isEmpty(tags?.style) && getStyle(tags)}>${
+        tags.text
+      }
           ${
             tags.child
               ? tags.child?.map((formChild) => {
@@ -473,7 +502,7 @@ export default function getTags(tags, radiokeys, checkBox) {
     case "span": {
       tag = `<${tags.tagName} ${
         tags.className ? `className="${tags.className}"` : ""
-      }>${tags.text}
+      }${!isEmpty(tags?.style) && getStyle(tags)}>${tags.text}
           ${
             tags.child
               ? tags.child?.map((formChild) => {
@@ -485,7 +514,9 @@ export default function getTags(tags, radiokeys, checkBox) {
     }
 
     case "p": {
-      tag = `<${tags.tagName}>${tags.text ? tags.text : ""}
+      tag = `<${tags.tagName}${!isEmpty(tags?.style) && getStyle(tags)}>${
+        tags.text ? tags.text : ""
+      }
           ${
             tags.child
               ? tags.child?.map((formChild) => {
@@ -498,7 +529,9 @@ export default function getTags(tags, radiokeys, checkBox) {
     }
 
     case "form": {
-      tag = `<${tags?.tagName} onSubmit={handleSubmit}>
+      tag = `<${tags?.tagName} ${
+        !isEmpty(tags?.style) && getStyle(tags)
+      }onSubmit={handleSubmit}>
           ${
             tags.child
               ? tags.child?.map((formChild) => {
@@ -514,6 +547,7 @@ export default function getTags(tags, radiokeys, checkBox) {
 
     case "select": {
       tag = `<${tags?.tagName} 
+            ${!isEmpty(tags?.style) && getStyle(tags)}
             type="${tags.type}"
             value={state.value}
             ${tags.type !== "submit" ? `onChange={handleChange}` : ""}

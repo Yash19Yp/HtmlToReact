@@ -6,6 +6,7 @@ function modifyNode(node) {
     case "i": {
       defaultValue = Object.assign(defaultValue, {
         className: node.className,
+        style: node?.style,
       });
       break;
     }
@@ -16,7 +17,8 @@ function modifyNode(node) {
         text: node.innerText,
         rows: node.rows,
         cols: node.cols,
-        value: node,
+        value: node?.innerText,
+        style: node?.style,
       });
       break;
     }
@@ -26,6 +28,7 @@ function modifyNode(node) {
         className: node.className,
         type: node.type,
         text: node.innerText,
+        style: node?.style,
       });
       break;
     }
@@ -33,6 +36,7 @@ function modifyNode(node) {
     case "table": {
       defaultValue = Object.assign(defaultValue, {
         className: node.className,
+        style: node?.style,
       });
       break;
     }
@@ -41,6 +45,7 @@ function modifyNode(node) {
       defaultValue = Object.assign(defaultValue, {
         className: node.className,
         text: node.textContent,
+        style: node?.style,
       });
       break;
     }
@@ -58,6 +63,7 @@ function modifyNode(node) {
       defaultValue = Object.assign(defaultValue, {
         className: node.className,
         text: node.innerText,
+        style: node?.style,
       });
       break;
     }
@@ -65,6 +71,7 @@ function modifyNode(node) {
     case "th": {
       defaultValue = Object.assign(defaultValue, {
         className: node.className,
+        style: node?.style,
         text: node.textContent,
       });
       break;
@@ -74,6 +81,7 @@ function modifyNode(node) {
       defaultValue = Object.assign(defaultValue, {
         className: node.className,
         text: node.textContent,
+        style: node?.style,
       });
       break;
     }
@@ -83,6 +91,7 @@ function modifyNode(node) {
         method: node.method,
         onSubmit: node,
         className: node.className,
+        style: node?.style,
       });
       break;
     }
@@ -90,6 +99,7 @@ function modifyNode(node) {
     case "div": {
       defaultValue = Object.assign(defaultValue, {
         className: node.className,
+        style: node?.style,
       });
       break;
     }
@@ -97,6 +107,7 @@ function modifyNode(node) {
     case "fieldset": {
       defaultValue = Object.assign(defaultValue, {
         className: node.className,
+        style: node?.style,
       });
       break;
     }
@@ -105,6 +116,7 @@ function modifyNode(node) {
       defaultValue = Object.assign(defaultValue, {
         className: node.className,
         text: node.innerText,
+        style: node?.style,
       });
       break;
     }
@@ -114,6 +126,7 @@ function modifyNode(node) {
         className: node.className,
         for: node.htmlFor,
         text: node.innerText,
+        style: node?.style,
       });
       break;
     }
@@ -122,6 +135,7 @@ function modifyNode(node) {
       defaultValue = Object.assign(defaultValue, {
         className: node.className,
         text: node.textContent,
+        style: node?.style,
       });
       break;
     }
@@ -140,6 +154,7 @@ function modifyNode(node) {
         max: node.min,
         checked: node.checked,
         required: node.required,
+        style: node?.style,
       });
       break;
     }
@@ -147,6 +162,7 @@ function modifyNode(node) {
     case "h1": {
       defaultValue = Object.assign(defaultValue, {
         text: node.innerText,
+        style: node?.style,
       });
       break;
     }
@@ -154,6 +170,7 @@ function modifyNode(node) {
     case "h2": {
       defaultValue = Object.assign(defaultValue, {
         text: node.innerText,
+        style: node?.style,
       });
       break;
     }
@@ -161,6 +178,7 @@ function modifyNode(node) {
     case "h3": {
       defaultValue = Object.assign(defaultValue, {
         text: node.innerText,
+        style: node?.style,
       });
       break;
     }
@@ -168,6 +186,7 @@ function modifyNode(node) {
     case "h4": {
       defaultValue = Object.assign(defaultValue, {
         text: node.innerText,
+        style: node?.style,
       });
       break;
     }
@@ -175,6 +194,7 @@ function modifyNode(node) {
     case "p": {
       defaultValue = Object.assign(defaultValue, {
         className: node.className,
+        style: node?.style,
         text: node.innerText,
       });
       break;
@@ -186,6 +206,7 @@ function modifyNode(node) {
         type: node.type,
         name: node.name,
         className: node.className,
+        style: node?.style,
       });
       break;
     }
@@ -194,6 +215,7 @@ function modifyNode(node) {
       defaultValue = Object.assign(defaultValue, {
         value: node.value,
         text: node.text,
+        style: node?.style,
       });
       break;
     }
