@@ -216,17 +216,21 @@ const ReactCodeonverter = (props) => {
 
       const [state, setState] = React.useState({${getStateVar()}${getOptionvar()}${getSelectvar()}
       });
-      const [checked, setChecked] = React.useState({${getCheckboxvar()}
-      });
 
       const handleChange = e => {
         setState({...state, [e.target.name]: e.target.value});
       }; 
 
-      const handleToggle = ({ target }) => {
-        setChecked((s) => ({ ...s, [target.name]: !s[target.name] }));
-      };
+      ${
+        !isEmpty(checkBox)
+          ? `const [checked, setChecked] = React.useState({${getCheckboxvar()}
+    });
 
+    const handleToggle = ({ target }) => {
+      setChecked((s) => ({ ...s, [target.name]: !s[target.name] }));
+    };`
+          : ""
+      }
       ${props?.inputTags
         ?.map((inputs) => {
           return inputs?.required
@@ -273,7 +277,7 @@ const ReactCodeonverter = (props) => {
         event.preventDefault();
         const formData = {
           ...state,
-          ...checked,
+          ${!isEmpty(checkBox) ? `...checked,` : ""}
         };
         await axios
           .post(submitApi, { formData })
