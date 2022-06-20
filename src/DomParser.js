@@ -37,6 +37,10 @@ function modifyNode(node) {
       defaultValue = Object.assign(defaultValue, {
         className: node.className,
         style: node?.style,
+        border: node?.border,
+        cellspacing: node?.cellSpacing,
+        cellpadding: node?.cellPadding,
+        align: node?.align,
       });
       break;
     }
@@ -60,6 +64,15 @@ function modifyNode(node) {
     }
 
     case "li": {
+      defaultValue = Object.assign(defaultValue, {
+        className: node.className,
+        text: node.innerText,
+        style: node?.style,
+      });
+      break;
+    }
+
+    case "ol": {
       defaultValue = Object.assign(defaultValue, {
         className: node.className,
         text: node.innerText,

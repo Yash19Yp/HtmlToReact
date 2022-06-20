@@ -31,6 +31,5 @@ export function getStyle(tags) {
         ? `${[key[0]]}: "${key[1]}",`
         : "";
   });
-  style = `style={{${style.slice(0, -1)}}}`;
-  return style ? style : "";
+  return style ? `style={{${style.slice(0, -1)}}}` : "";
 }

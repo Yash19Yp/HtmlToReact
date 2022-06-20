@@ -251,6 +251,21 @@ export default function getTags(tags, radiokeys, checkBox) {
       break;
     }
 
+    case "ol": {
+      tag = `<${tags?.tagName} ${
+        tags.className ? `className="${tags.className}"` : ""
+      }${!isEmpty(tags?.style) && getStyle(tags)}>${tags.text}
+          ${
+            tags.child
+              ? tags.child?.map((formChild) => {
+                  return getTags(formChild, radiokeys, checkBox);
+                })
+              : ""
+          }
+          </${tags?.tagName}>\n\t`;
+      break;
+    }
+
     case "li": {
       tag = `<${tags?.tagName} ${
         tags.className ? `className="${tags.className}"` : ""
@@ -308,9 +323,11 @@ export default function getTags(tags, radiokeys, checkBox) {
       }${!isEmpty(tags?.style) && getStyle(tags)}>
             ${
               tags.child
-                ? tags.child?.map((formChild) => {
-                    return getTags(formChild, radiokeys, checkBox);
-                  })
+                ? tags.child
+                    ?.map((formChild) => {
+                      return getTags(formChild, radiokeys, checkBox);
+                    })
+                    .join("")
                 : ""
             }
             </${tags?.tagName}>\n\t`;
@@ -362,8 +379,13 @@ export default function getTags(tags, radiokeys, checkBox) {
 
     case "table": {
       tag = `<${tags?.tagName} ${
-        tags.className ? `className="${tags.className}"` : ""
-      }${!isEmpty(tags?.style) && getStyle(tags)}>
+        tags?.border ? `border="${tags?.border}"` : ""
+      } ${tags?.cellspacing ? `cellspacing="${tags?.cellspacing}"` : ""}
+      ${tags?.cellpadding ? `cellpadding="${tags?.cellpadding}"` : ""}
+      ${tags?.align ? `align="${tags?.align}"` : ""}
+      ${tags.className ? `className="${tags.className}"` : ""}${
+        !isEmpty(tags?.style) && getStyle(tags)
+      }>
           ${
             tags.child
               ? tags.child?.map((formChild) => {
@@ -423,7 +445,7 @@ export default function getTags(tags, radiokeys, checkBox) {
     case "td": {
       tag = `<${tags?.tagName} ${
         tags.className ? `className="${tags.className}"` : ""
-      }${!isEmpty(tags?.style) && getStyle(tags)}>
+      }${!isEmpty(tags?.style) && getStyle(tags)}>${tags?.text}
           ${
             tags.child
               ? tags.child?.map((formChild) => {
