@@ -21,3 +21,15 @@ export const isEmpty = (input, options) => {
 
   return false;
 };
+
+//for inline css
+export function getStyle(tags) {
+  let style = "";
+  Object.entries(tags?.style).map((key) => {
+    style +=
+      !isEmpty(key[1]) && isNaN(parseInt(key[0]))
+        ? `${[key[0]]}: "${key[1]}",`
+        : "";
+  });
+  return style ? `style={{${style.slice(0, -1)}}}` : "";
+}

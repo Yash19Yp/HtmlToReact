@@ -302,11 +302,13 @@ const ReactCodeonverter = (props) => {
         .join("")}
 
       return(
-        ${props?.output
-          ?.map((tags) => {
-            return getTags(tags, radiokeys, checkBox);
-          })
-          .join("")}
+        <div>
+          ${props?.output
+            ?.map((tags) => {
+              return getTags(tags, radiokeys, checkBox);
+            })
+            .join("")}
+        </div>
       );
     }
     export default Form;
