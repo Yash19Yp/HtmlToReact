@@ -534,9 +534,11 @@ export default function getTags(tags, radiokeys, checkBox) {
       }onSubmit={handleSubmit}>
           ${
             tags.child
-              ? tags.child?.map((formChild) => {
-                  return getTags(formChild, radiokeys, checkBox);
-                })
+              ? tags.child
+                  ?.map((formChild) => {
+                    return getTags(formChild, radiokeys, checkBox);
+                  })
+                  .join("")
               : ""
           }
           ${getCheckboxtag(checkBox)}
@@ -569,8 +571,10 @@ export default function getTags(tags, radiokeys, checkBox) {
 
     default:
   }
-
-  return tag.replaceAll(",", "").replace(/^\s*\n/gm, "");
+  return tag
+    .replace(/^\s*\n/gm, "")
+    .replaceAll(">,", ">")
+    .replaceAll(",<", "<");
 }
 
 //returns radio component
